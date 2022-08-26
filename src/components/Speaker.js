@@ -28,14 +28,14 @@ function SpeakerImage({ id, first, last }) {
     );
 }
 
-function SpeakerFavorit({favorite }){
-    return(
+function SpeakerFavorit({ favorite, onFavoriteToggle }) {
+    return (
         <div className="action padB1">
-            <span>
+            <span onClick={onFavoriteToggle}>
                 <li className={
                     favorite === true ? "fa fa-star orange" : "fa fa-star-o orange"
                 }>{""}
-                Favorite{""}
+                    Favorite{""}
 
                 </li>
             </span>
@@ -43,7 +43,7 @@ function SpeakerFavorit({favorite }){
     );
 }
 
-function SpeakerDemographics({ first, last, bio, company, twitterHandle, favorite }) {
+function SpeakerDemographics({ first, last, bio, company, twitterHandle, favorite, onFavoriteToggle }) {
     return (
         <div className="speaker-info">
             <div className="d-flex justify-content-between mb-3">
@@ -52,7 +52,7 @@ function SpeakerDemographics({ first, last, bio, company, twitterHandle, favorit
                 </h3>
             </div>
             <div>
-                <SpeakerFavorit favorite={favorite}></SpeakerFavorit>
+                <SpeakerFavorit favorite={favorite} onFavoriteToggle={onFavoriteToggle} ></SpeakerFavorit>
             </div>
             <div>
 
@@ -75,15 +75,15 @@ function SpeakerDemographics({ first, last, bio, company, twitterHandle, favorit
     );
 }
 
-function Speaker({ speaker, showSessions }) {
+function Speaker({ speaker, showSessions, onFavoriteToggle }) {
     const { id, first, last, sessions } = speaker;
     return (
         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
             <div className="card card-height p-4 mt-4">
                 <SpeakerImage id={id} first={first} last={last} />
-                <SpeakerDemographics {...speaker} />
-            </div> {showSessions === true ? 
-            <Sessions sessions={sessions} /> : null}
+                <SpeakerDemographics {...speaker} onFavoriteToggle={onFavoriteToggle} />
+            </div> {showSessions === true ?
+                <Sessions sessions={sessions} /> : null}
         </div>
     );
 }
