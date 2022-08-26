@@ -1,4 +1,4 @@
-function Header({theme}) {
+function Header({ theme }) {
     return (
         <div className="padT4 padB4">
             <div className="container mobile-container">
