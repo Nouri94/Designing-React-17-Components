@@ -1,16 +1,19 @@
 import Speaker from './Speaker'
-import useRequestSpeakers from '../hooks/useRequestSpeakers'
+import { data } from '../../SpeakerData'
+import useRequestDelay, { REQUEST_STATUS } from '../hooks/useRequestDelay'
 
 function SpeakersList({ showSessions }) {
-    const { speakersData, isLoading, hasErrored, error, onFavoriteToggle }
-        = useRequestSpeakers(2000)
+    const { data: speakersData, requestStatus, error, updateRecord }
+        = useRequestDelay(2000, data)
 
-    if (hasErrored === true) return (
+    if (requestStatus === REQUEST_STATUS.FAILURE) return (
         <div className='text-danger'>
             ERROR: <b>Loading Speaker Data failed {error}</b>
         </div>
     )
-    if (isLoading === true) return <div>Loading...</div>
+
+    //if (requestStatus === REQUEST_STATUS.SUCCESS)   return <div>Loading...</div>
+        
     return (<div className="container speakers-list">
         <div className="row">
             {speakersData.map(function (speaker) {
@@ -19,7 +22,7 @@ function SpeakersList({ showSessions }) {
                         speaker={speaker}
                         showSessions={showSessions}
                         onFavoriteToggle={() => {
-                            onFavoriteToggle(speaker.id);
+                            updateRecord({ ...speaker, favorite: !speaker.favorite, });
                         }} />
                 );
             })}
