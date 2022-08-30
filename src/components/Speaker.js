@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 function Session({ title, room }) {
     // const [title, room] = props instead of that we send them as params (This is called destructuring)
     return (
@@ -29,20 +30,24 @@ function SpeakerImage({ id, first, last }) {
 }
 
 function SpeakerFavorit({ favorite, onFavoriteToggle }) {
-
-    function doneCallback(){
+    const [inTransition, setInTransition] = useState(false);
+    function doneCallback() {
+        setInTransition(false);
         console.log("TEST");
     }
     return (
         <div className="action padB1">
-            <span onClick={function(){
+            <span onClick={function () {
+                setInTransition(true);
                 return onFavoriteToggle(doneCallback);
             }}>
                 <li className={
                     favorite === true ? "fa fa-star orange" : "fa fa-star-o orange"
                 }>{""}
                     Favorite{""}
-
+                    {inTransition ? (
+                        <span className="fas fa-circle-notch fa-spin"></span>
+                    ) : null}
                 </li>
             </span>
         </div>
