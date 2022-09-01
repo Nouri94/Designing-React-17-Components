@@ -1,8 +1,9 @@
 import Speaker from './Speaker'
 import { data } from '../../SpeakerData'
 import useRequestDelay, { REQUEST_STATUS } from '../hooks/useRequestDelay'
+import {SpeakerFilterContext} from '../contexts/SpeakerFilterContext';
 
-function SpeakersList({ showSessions }) {
+function SpeakersList() {    
     const { data: speakersData, requestStatus, error, updateRecord }
         = useRequestDelay(2000, data)
 
@@ -19,8 +20,7 @@ function SpeakersList({ showSessions }) {
             {speakersData.map(function (speaker) {
                 return (
                     <Speaker key={speaker.id}
-                        speaker={speaker}
-                        showSessions={showSessions}
+                        speaker={speaker}                        
                         onFavoriteToggle={(doneCallback) => {
                             updateRecord({ ...speaker, favorite: !speaker.favorite, }, doneCallback);
                         }} />
