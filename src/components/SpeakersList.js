@@ -3,10 +3,11 @@ import { data } from '../../SpeakerData'
 import useRequestDelay, { REQUEST_STATUS } from '../hooks/useRequestDelay'
 import { SpeakerFilterContext } from '../contexts/SpeakerFilterContext';
 import { useContext } from 'react';
+import SpeakerAdd from './SpeakerAdd';
 
 function SpeakersList() {
     const { eventYear, searchQuery } = useContext(SpeakerFilterContext);
-    const { data: speakersData, requestStatus, error, updateRecord }
+    const { data: speakersData, requestStatus, error, updateRecord, insertRecord, deleteRecord, }
         = useRequestDelay(2000, data)
 
     if (requestStatus === REQUEST_STATUS.FAILURE) return (
@@ -18,6 +19,7 @@ function SpeakersList() {
     //if (requestStatus === REQUEST_STATUS.SUCCESS)   return <div>Loading...</div>
 
     return (<div className="container speakers-list">
+        <SpeakerAdd eventYear={eventYear} insertRecord={insertRecord}></SpeakerAdd>
         <div className="row">
             {speakersData.filter(function (speaker) {
                 return (
@@ -34,7 +36,9 @@ function SpeakersList() {
                     return (
                         <Speaker key={speaker.id}
                             speaker={speaker}
-                            updateRecord={updateRecord} />
+                            updateRecord={updateRecord}
+                            insertRecord={insertRecord}
+                            deleteRecord={deleteRecord} />
                     );
                 })}
         </div>

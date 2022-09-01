@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { SpeakerFilterContext } from '../contexts/SpeakerFilterContext';
 import { SpeakerContext, SpeakerProvider } from '../contexts/SpeakerContext';
+import SpeakerDelete from "./SpeakerDelete";
 
 function Session({ title, room }) {
     // const [title, room] = props instead of that we send them as params (This is called destructuring)
@@ -12,7 +13,7 @@ function Session({ title, room }) {
 }
 
 function Sessions() {
-    const { speaker} = useContext(SpeakerContext);
+    const { speaker } = useContext(SpeakerContext);
     const sessions = speaker.sessions;
     const { eventYear } = useContext(SpeakerFilterContext);
     return (
@@ -107,17 +108,18 @@ function SpeakerDemographics() {
     );
 }
 
-function Speaker({ speaker, updateRecord }) {
-    const { id, first, last, sessions } = speaker;
+function Speaker({ speaker, updateRecord, insertRecord, deleteRecord }) {
     const { showSessions } = useContext(SpeakerFilterContext);
     return (
-        <SpeakerProvider speaker={speaker} updateRecord={updateRecord}>
+        <SpeakerProvider speaker={speaker} updateRecord={updateRecord} insertRecord={insertRecord}
+            deleteRecord={deleteRecord}>
             <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
                 <div className="card card-height p-4 mt-4">
                     <SpeakerImage />
                     <SpeakerDemographics />
                 </div> {showSessions === true ?
                     <Sessions /> : null}
+                    <SpeakerDelete />
             </div>
         </SpeakerProvider>
     );
