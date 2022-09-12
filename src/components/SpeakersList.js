@@ -1,6 +1,6 @@
 import Speaker from './Speaker'
 import { data } from '../../SpeakerData'
-import useRequestDelay, { REQUEST_STATUS } from '../hooks/useRequestDelay'
+import useRequestRest, { REQUEST_STATUS } from '../hooks/useRequestRest'
 import { SpeakerFilterContext } from '../contexts/SpeakerFilterContext';
 import { useContext } from 'react';
 import SpeakerAdd from './SpeakerAdd';
@@ -8,7 +8,7 @@ import SpeakerAdd from './SpeakerAdd';
 function SpeakersList() {
     const { eventYear, searchQuery } = useContext(SpeakerFilterContext);
     const { data: speakersData, requestStatus, error, updateRecord, insertRecord, deleteRecord, }
-        = useRequestDelay(2000, data)
+        = useRequestRest()
 
     if (requestStatus === REQUEST_STATUS.FAILURE) return (
         <div className='text-danger'>
