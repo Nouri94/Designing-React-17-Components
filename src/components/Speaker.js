@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, memo } from "react";
 import { SpeakerFilterContext } from '../contexts/SpeakerFilterContext';
 import { SpeakerContext, SpeakerProvider } from '../contexts/SpeakerContext';
 import SpeakerDelete from "./SpeakerDelete";
@@ -124,7 +124,7 @@ function SpeakerDemographics() {
     );
 }
 
-function Speaker({ speaker, updateRecord, insertRecord, deleteRecord }) {
+const Speaker = memo(function Speaker({ speaker, updateRecord, insertRecord, deleteRecord }) {
     const { showSessions } = useContext(SpeakerFilterContext);
     return (
         <SpeakerProvider speaker={speaker} updateRecord={updateRecord} insertRecord={insertRecord}
@@ -139,6 +139,10 @@ function Speaker({ speaker, updateRecord, insertRecord, deleteRecord }) {
             </div>
         </SpeakerProvider>
     );
+}, areEqualSpeaker);
+
+function areEqualSpeaker(prevProps, nextProps){
+    return (prevProps.speaker.favorite === nextProps.speaker.favorite)
 }
 
-export default Speaker;
+export default Speaker; 
