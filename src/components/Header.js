@@ -1,9 +1,41 @@
 import { ThemeContext } from '../contexts/ThemeContext';
 import { useContext } from 'react';
+import withAuth from './withAuth';
 
-function Header() {
-    
-const {theme} = useContext(ThemeContext); // Destructure only theme
+function Header({ loggedInUser, setLoggedInUser }) {
+    const { theme } = useContext(ThemeContext);
+
+    function LoggedIn({ loggedInUser, setLoggedInUser }) {
+        return (
+            <div>
+                <span>Logged in as {loggedInUser}</span>&nbsp;&nbsp;
+                <button
+                    className="btn btn-secondary"
+                    onClick={() => {
+                        setLoggedInUser("");
+                    }}
+                >
+                    Logout
+                </button>
+            </div>
+        );
+    }
+
+    function NotLoggedIn({ loggedInUser, setLoggedInUser }) {
+        return (
+            <button
+                className="btn-secondary"
+                onClick={(e) => {
+                    e.preventDefault();
+                    const username = window.prompt("Enter Login Name:", "");
+                    setLoggedInUser(username);
+                }}
+            >
+                Login
+            </button>
+        );
+    }
+
     return (
         <div className="padT4 padB4">
             <div className="container mobile-container">
@@ -17,10 +49,17 @@ const {theme} = useContext(ThemeContext); // Destructure only theme
                     <div className={
                         theme === "light" ? "" : "text-info"
                     }>
-                        Hello Mr. Smith &nbsp;&nbsp;
-                        <span>
-                            <a href="#">sign-out</a>
-                        </span>
+                        {loggedInUser && loggedInUser.length > 0 ? (
+                            <LoggedIn
+                                loggedInUser={loggedInUser}
+                                setLoggedInUser={setLoggedInUser}
+                            />
+                        ) : (
+                            <NotLoggedIn
+                                loggedInUser={loggedInUser}
+                                setLoggedInUser={setLoggedInUser}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -28,4 +67,4 @@ const {theme} = useContext(ThemeContext); // Destructure only theme
     );
 }
 
-export default Header;
+export default withAuth(Header);
